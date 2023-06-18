@@ -9,6 +9,7 @@ h_c = '''
 /start - Запуск бота
 /help - Вызов помощи
 /support - Написать в поддержку
+/description - Описание Dray
 ''' # Вывод функции помощи
 s_c = '''
 Чтобы обратиться в службу поддержки напишите письмо!
@@ -49,6 +50,10 @@ async def help_(message: types.Message):
 async def support_(message: types.Message):
     await message.answer(text=s_c)
     await message.delete()
+@dp.message_handler(commands=['secret']) # Вызов поддержки
+async def support_(message: types.Message):
+    await bot.send_sticker(message.from_user.id, sticker='CAACAgIAAxkBAAEJZDpkjyiCq7JzLczhnaE7yRp7noNrawACQx0AAmt1-UkOzn3LS4oOBi8E')
+    await message.delete()
 @dp.message_handler() # автоматический ответ
 async def auto_uns_(message: types.Message):
     await message.reply('Пожалуйста пользуйтесь командами!') # Написать сообщение которое отправил пользователь text=message.text
@@ -56,5 +61,7 @@ async def auto_uns_(message: types.Message):
 
 
 # Запуск Telegram бота
+async def on_start(_):
+    print('Бот успешно запущен!')
 if __name__ == '__main__':
-    executor.start_polling(dp) # Запускаем бота
+    executor.start_polling(dp, on_startup=on_start) # Запускаем бота
