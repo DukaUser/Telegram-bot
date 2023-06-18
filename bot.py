@@ -34,6 +34,17 @@ f.close()
 
 
 
+# Вход в систему использования ботом
+_id = (985508783,) # Мой id в телеграм, то есть все пользователи кому доступен бот
+admin_only = lambda message: message.from_user.id not in _id # Анонимная функция которая выдаёт bool значение при проверки является ли пользователь в acl
+@dp.message_handler(admin_only, content_types=['any']) # проверяет если хотябы один из кортежа является True выдаёт доступ
+async def handle_unwanted_users(message: types.Message): # функция которая удаляет нежелательных пользователей сообщения
+    await bot.delete_message(message.chat.id, message.message_id)
+    return
+
+
+
+
 # Ответов на сообщения и на команды
 @dp.message_handler(commands=['description'])
 async def desc_(message: types.Message):
